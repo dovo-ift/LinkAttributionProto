@@ -1,18 +1,21 @@
 syntax = "proto3";
 
 import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
 
 package chat;
 
 option go_package = "protogen/linkAttribution";
 
 service LinkAttribution {
-  rpc AppCreate(AppCreateRequest) returns (BaseResponse) {}
-  rpc AppDetail(AppDetailRequest) returns (BaseResponse) {}
+  rpc AppCreate(AppCreateRequest) returns (AppCreateResponse) {}
+  rpc AppList(AppListRequest) returns (AppListResponse) {}
+  rpc AppDetail(AppDetailRequest) returns (AppDetailResponse) {}
+  rpc AppDetailByDomain(AppDetailByDomainRequest) returns (AppDetailResponse) {}
 
-  rpc ConfigurationUpdate(ConfigurationUpdateRequest) returns (BaseResponse) {}
+  rpc ApiGetCurrentKey(ApiGetCurrentKeyRequest) returns (AppDetailResponse) {}
 
-  rpc ApiKeyGetToken(AppGetTokenRequest) returns (BaseResponse) {}
+  rpc ConfigurationUpdate(ConfigurationUpdateRequest) returns (ConfigurationUpdateResponse) {}
 
   rpc ConfigurationDetail(ConfigurationDetailRequest) returns (BaseResponse) {}
 
@@ -31,9 +34,62 @@ message AppCreateRequest {
   string timezone = 3;
 }
 
+message AppCreateResponse {
+  message Data {
+    string unid = 1;
+    google.protobuf.Timestamp created_at = 2;
+    google.protobuf.Timestamp updated_at = 3;
+    google.protobuf.Timestamp deleted_At = 4;
+    string name = 5;
+    string timezone = 6;
+  }
+
+  Data data = 1;
+  string message = 2;
+  int32 code = 3;
+}
+
+message AppListRequest {
+  string organizationUnid = 1;
+}
+
+message AppListResponse {
+  message Data {
+    string unid = 1;
+    google.protobuf.Timestamp created_at = 2;
+    google.protobuf.Timestamp updated_at = 3;
+    google.protobuf.Timestamp deleted_At = 4;
+    string name = 5;
+    string timezone = 6;
+  }
+
+  repeated Data data = 1;
+  string message = 2;
+  int32 code = 3;
+}
+
 message AppDetailRequest {
   string unid = 1;
   string organizationUnid = 2;
+}
+
+message AppDetailResponse {
+  message Data {
+    string unid = 1;
+    google.protobuf.Timestamp created_at = 2;
+    google.protobuf.Timestamp updated_at = 3;
+    google.protobuf.Timestamp deleted_At = 4;
+    string name = 5;
+    string timezone = 6;
+  }
+
+  Data data = 1;
+  string message = 2;
+  int32 code = 3;
+}
+
+message AppDetailByDomainRequest {
+  string domainName = 1;
 }
 
 message ConfigurationDetailRequest {
@@ -41,9 +97,9 @@ message ConfigurationDetailRequest {
   string organizationUnid = 2;
 }
 
-message AppGetTokenRequest {
-  string key = 1;
-  string secret = 2;
+message ApiGetCurrentKeyRequest {
+  string organizationUnid = 1;
+  string appUnid = 2;
 }
 
 message SocialMediaPreview {
@@ -100,4 +156,40 @@ message ConfigurationUpdateRequest {
   string domainName = 6;
   string desktopFallbackUrl = 7;
   string mobileFallbackUrl = 8;
+}
+
+message ConfigurationUpdateResponse {
+  message Data {
+    message AndroidConfigurations {
+      string uri = 1;
+      string custom_url = 2;
+      bool isSearch = 3;
+      string appPackageName = 4;
+      string sha_256_fingerprints = 5;
+    }
+
+    message IosConfigurations {
+      string uri = 1;
+      string custom_url = 2;
+      bool isSearch = 3;
+      repeated string bundle_identifiers = 4;
+      string appPrefix = 5;
+    }
+
+    string defaultFallbackUrl = 2;
+    AndroidConfigurations androidConfigurations = 3;
+    IosConfigurations iosConfigurations = 4;
+    SocialMediaPreview socialMediaPreview = 5;
+    string domainName = 6;
+    string desktopFallbackUrl = 7;
+    string mobileFallbackUrl = 8;
+    string unid = 9;
+    google.protobuf.Timestamp created_at = 10;
+    google.protobuf.Timestamp updated_at = 11;
+    google.protobuf.Timestamp deleted_At = 12;
+  }
+
+  repeated Data data = 1;
+  string message = 2;
+  int32 code = 3;
 }
