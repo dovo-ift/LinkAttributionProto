@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package chat;
+
+option go_package = "protogen/linkAttribution";
+
+service ApiKeyService {
+  rpc ApiKeyGetCurrentKey(ApiKeyGetCurrentKeyRequest) returns (ApiKeyGetCurrentKeyResponse) {}
+}
+
+message ApiKeyGetCurrentKeyRequest {
+  string organizationUnid = 1;
+  string appUnid = 2;
+}
+
+message ApiKeyGetCurrentKeyResponse {
+  message Data {
+    string id = 1;
+    google.protobuf.Timestamp created_at = 2;
+    google.protobuf.Timestamp updated_at = 3;
+    google.protobuf.Timestamp deleted_At = 4;
+    string key = 5;
+    string secret = 6;
+  }
+  Data data = 1;
+  string message = 2;
+  int32 code = 3;
+}

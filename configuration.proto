@@ -1,0 +1,104 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package chat;
+
+option go_package = "protogen/linkAttribution";
+
+service Configuration {
+  rpc ConfigurationUpdate(ConfigurationUpdateRequest) returns (ConfigurationUpsertResponse) {}
+  rpc ConfigurationDetail(ConfigurationDetailRequest) returns (ConfigurationDetailResponse) {}
+}
+
+message ConfigurationUpsert {
+  string unid = 1;
+  google.protobuf.Timestamp created_at = 2;
+  google.protobuf.Timestamp updated_at = 3;
+  google.protobuf.Timestamp deleted_At = 4;
+}
+
+message ConfigurationUpsertResponse {
+  ConfigurationUpsert data = 1;
+  string message = 2;
+  int32 code = 3;
+}
+
+message SocialMediaPreview {
+  string title = 1;
+  string description = 2;
+}
+
+message ConfigurationUpsertListResponse {
+  repeated ConfigurationUpsert data = 1;
+  string message = 2;
+  int32 code = 3;
+}
+
+message ConfigurationDetailRequest {
+  string unid = 1;
+  string organizationUnid = 2;
+}
+
+message ConfigurationUpdateRequest {
+  message AndroidConfigurations {
+    string uri = 1;
+    string CUSTOM_URL = 2;
+    bool isSearch = 3;
+    string appPackageName = 4;
+    string sha_256_fingerprints = 5;
+  }
+
+  message IosConfigurations {
+    string uri = 1;
+    string customUrl = 2;
+    bool isSearch = 3;
+    repeated string bundle_identifiers = 4;
+    string appPrefix = 5;
+  }
+
+  string appUnid = 1;
+  string defaultFallbackUrl = 2;
+  AndroidConfigurations androidConfigurations = 3;
+  IosConfigurations iosConfigurations = 4;
+  SocialMediaPreview socialMediaPreview = 5;
+  string domainName = 6;
+  string desktopFallbackUrl = 7;
+  string mobileFallbackUrl = 8;
+}
+
+message ConfigurationDetailResponse {
+  message Data {
+    message AndroidConfigurations {
+      string uri = 1;
+      string customUrl = 2;
+      bool isSearch = 3;
+      string appPackageName = 4;
+      string SHA256_FINGERPRINTS = 5;
+    }
+
+    message IosConfigurations {
+      string uri = 1;
+      string customUrl = 2;
+      bool isSearch = 3;
+      repeated string bundle_identifiers = 4;
+      string appPrefix = 5;
+    }
+
+    string defaultFallbackUrl = 2;
+    AndroidConfigurations androidConfigurations = 3;
+    IosConfigurations iosConfigurations = 4;
+    SocialMediaPreview socialMediaPreview = 5;
+    string domainName = 6;
+    string desktopFallbackUrl = 7;
+    string mobileFallbackUrl = 8;
+    string unid = 9;
+    google.protobuf.Timestamp created_at = 10;
+    google.protobuf.Timestamp updated_at = 11;
+    google.protobuf.Timestamp deleted_At = 12;
+  }
+
+  repeated Data data = 1;
+  string message = 2;
+  int32 code = 3;
+}
