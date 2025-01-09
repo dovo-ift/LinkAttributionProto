@@ -43,7 +43,7 @@ message ConfigurationDetailRequest {
 message ConfigurationUpdateRequest {
   message AndroidConfigurations {
     string uri = 1;
-    string CUSTOM_URL = 2;
+    string customUrl = 2;
     bool isSearch = 3;
     string appPackageName = 4;
     string sha_256_fingerprints = 5;
