@@ -22,12 +22,14 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LinkAttributionClient interface {
-	AppCreate(ctx context.Context, in *AppCreateRequest, opts ...grpc.CallOption) (*BaseResponse, error)
-	AppDetail(ctx context.Context, in *AppDetailRequest, opts ...grpc.CallOption) (*BaseResponse, error)
-	ConfigurationUpdate(ctx context.Context, in *ConfigurationUpdateRequest, opts ...grpc.CallOption) (*BaseResponse, error)
-	ApiKeyGetToken(ctx context.Context, in *AppGetTokenRequest, opts ...grpc.CallOption) (*BaseResponse, error)
-	ConfigurationDetail(ctx context.Context, in *ConfigurationDetailRequest, opts ...grpc.CallOption) (*BaseResponse, error)
-	LinksBulkCreate(ctx context.Context, in *LinksBulkCreateRequest, opts ...grpc.CallOption) (*BaseResponse, error)
+	AppCreate(ctx context.Context, in *AppCreateRequest, opts ...grpc.CallOption) (*UpsertResponse, error)
+	AppList(ctx context.Context, in *AppListRequest, opts ...grpc.CallOption) (*AppListResponse, error)
+	AppDetail(ctx context.Context, in *AppDetailRequest, opts ...grpc.CallOption) (*AppDetailResponse, error)
+	AppDetailByDomain(ctx context.Context, in *AppDetailByDomainRequest, opts ...grpc.CallOption) (*AppDetailResponse, error)
+	ApiGetCurrentKey(ctx context.Context, in *ApiGetCurrentKeyRequest, opts ...grpc.CallOption) (*AppDetailResponse, error)
+	ConfigurationUpdate(ctx context.Context, in *ConfigurationUpdateRequest, opts ...grpc.CallOption) (*UpsertResponse, error)
+	ConfigurationDetail(ctx context.Context, in *ConfigurationDetailRequest, opts ...grpc.CallOption) (*ConfigurationDetailResponse, error)
+	LinksBulkCreate(ctx context.Context, in *LinksBulkCreateRequest, opts ...grpc.CallOption) (*UpsertListResponse, error)
 }
 
 type linkAttributionClient struct {
@@ -38,8 +40,8 @@ func NewLinkAttributionClient(cc grpc.ClientConnInterface) LinkAttributionClient
 	return &linkAttributionClient{cc}
 }
 
-func (c *linkAttributionClient) AppCreate(ctx context.Context, in *AppCreateRequest, opts ...grpc.CallOption) (*BaseResponse, error) {
-	out := new(BaseResponse)
+func (c *linkAttributionClient) AppCreate(ctx context.Context, in *AppCreateRequest, opts ...grpc.CallOption) (*UpsertResponse, error) {
+	out := new(UpsertResponse)
 	err := c.cc.Invoke(ctx, "/chat.LinkAttribution/AppCreate", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -47,8 +49,17 @@ func (c *linkAttributionClient) AppCreate(ctx context.Context, in *AppCreateRequ
 	return out, nil
 }
 
-func (c *linkAttributionClient) AppDetail(ctx context.Context, in *AppDetailRequest, opts ...grpc.CallOption) (*BaseResponse, error) {
-	out := new(BaseResponse)
+func (c *linkAttributionClient) AppList(ctx context.Context, in *AppListRequest, opts ...grpc.CallOption) (*AppListResponse, error) {
+	out := new(AppListResponse)
+	err := c.cc.Invoke(ctx, "/chat.LinkAttribution/AppList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *linkAttributionClient) AppDetail(ctx context.Context, in *AppDetailRequest, opts ...grpc.CallOption) (*AppDetailResponse, error) {
+	out := new(AppDetailResponse)
 	err := c.cc.Invoke(ctx, "/chat.LinkAttribution/AppDetail", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -56,8 +67,26 @@ func (c *linkAttributionClient) AppDetail(ctx context.Context, in *AppDetailRequ
 	return out, nil
 }
 
-func (c *linkAttributionClient) ConfigurationUpdate(ctx context.Context, in *ConfigurationUpdateRequest, opts ...grpc.CallOption) (*BaseResponse, error) {
-	out := new(BaseResponse)
+func (c *linkAttributionClient) AppDetailByDomain(ctx context.Context, in *AppDetailByDomainRequest, opts ...grpc.CallOption) (*AppDetailResponse, error) {
+	out := new(AppDetailResponse)
+	err := c.cc.Invoke(ctx, "/chat.LinkAttribution/AppDetailByDomain", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *linkAttributionClient) ApiGetCurrentKey(ctx context.Context, in *ApiGetCurrentKeyRequest, opts ...grpc.CallOption) (*AppDetailResponse, error) {
+	out := new(AppDetailResponse)
+	err := c.cc.Invoke(ctx, "/chat.LinkAttribution/ApiGetCurrentKey", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *linkAttributionClient) ConfigurationUpdate(ctx context.Context, in *ConfigurationUpdateRequest, opts ...grpc.CallOption) (*UpsertResponse, error) {
+	out := new(UpsertResponse)
 	err := c.cc.Invoke(ctx, "/chat.LinkAttribution/ConfigurationUpdate", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -65,17 +94,8 @@ func (c *linkAttributionClient) ConfigurationUpdate(ctx context.Context, in *Con
 	return out, nil
 }
 
-func (c *linkAttributionClient) ApiKeyGetToken(ctx context.Context, in *AppGetTokenRequest, opts ...grpc.CallOption) (*BaseResponse, error) {
-	out := new(BaseResponse)
-	err := c.cc.Invoke(ctx, "/chat.LinkAttribution/ApiKeyGetToken", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *linkAttributionClient) ConfigurationDetail(ctx context.Context, in *ConfigurationDetailRequest, opts ...grpc.CallOption) (*BaseResponse, error) {
-	out := new(BaseResponse)
+func (c *linkAttributionClient) ConfigurationDetail(ctx context.Context, in *ConfigurationDetailRequest, opts ...grpc.CallOption) (*ConfigurationDetailResponse, error) {
+	out := new(ConfigurationDetailResponse)
 	err := c.cc.Invoke(ctx, "/chat.LinkAttribution/ConfigurationDetail", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -83,8 +103,8 @@ func (c *linkAttributionClient) ConfigurationDetail(ctx context.Context, in *Con
 	return out, nil
 }
 
-func (c *linkAttributionClient) LinksBulkCreate(ctx context.Context, in *LinksBulkCreateRequest, opts ...grpc.CallOption) (*BaseResponse, error) {
-	out := new(BaseResponse)
+func (c *linkAttributionClient) LinksBulkCreate(ctx context.Context, in *LinksBulkCreateRequest, opts ...grpc.CallOption) (*UpsertListResponse, error) {
+	out := new(UpsertListResponse)
 	err := c.cc.Invoke(ctx, "/chat.LinkAttribution/LinksBulkCreate", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -96,12 +116,14 @@ func (c *linkAttributionClient) LinksBulkCreate(ctx context.Context, in *LinksBu
 // All implementations must embed UnimplementedLinkAttributionServer
 // for forward compatibility
 type LinkAttributionServer interface {
-	AppCreate(context.Context, *AppCreateRequest) (*BaseResponse, error)
-	AppDetail(context.Context, *AppDetailRequest) (*BaseResponse, error)
-	ConfigurationUpdate(context.Context, *ConfigurationUpdateRequest) (*BaseResponse, error)
-	ApiKeyGetToken(context.Context, *AppGetTokenRequest) (*BaseResponse, error)
-	ConfigurationDetail(context.Context, *ConfigurationDetailRequest) (*BaseResponse, error)
-	LinksBulkCreate(context.Context, *LinksBulkCreateRequest) (*BaseResponse, error)
+	AppCreate(context.Context, *AppCreateRequest) (*UpsertResponse, error)
+	AppList(context.Context, *AppListRequest) (*AppListResponse, error)
+	AppDetail(context.Context, *AppDetailRequest) (*AppDetailResponse, error)
+	AppDetailByDomain(context.Context, *AppDetailByDomainRequest) (*AppDetailResponse, error)
+	ApiGetCurrentKey(context.Context, *ApiGetCurrentKeyRequest) (*AppDetailResponse, error)
+	ConfigurationUpdate(context.Context, *ConfigurationUpdateRequest) (*UpsertResponse, error)
+	ConfigurationDetail(context.Context, *ConfigurationDetailRequest) (*ConfigurationDetailResponse, error)
+	LinksBulkCreate(context.Context, *LinksBulkCreateRequest) (*UpsertListResponse, error)
 	mustEmbedUnimplementedLinkAttributionServer()
 }
 
@@ -109,22 +131,28 @@ type LinkAttributionServer interface {
 type UnimplementedLinkAttributionServer struct {
 }
 
-func (UnimplementedLinkAttributionServer) AppCreate(context.Context, *AppCreateRequest) (*BaseResponse, error) {
+func (UnimplementedLinkAttributionServer) AppCreate(context.Context, *AppCreateRequest) (*UpsertResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AppCreate not implemented")
 }
-func (UnimplementedLinkAttributionServer) AppDetail(context.Context, *AppDetailRequest) (*BaseResponse, error) {
+func (UnimplementedLinkAttributionServer) AppList(context.Context, *AppListRequest) (*AppListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AppList not implemented")
+}
+func (UnimplementedLinkAttributionServer) AppDetail(context.Context, *AppDetailRequest) (*AppDetailResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AppDetail not implemented")
 }
-func (UnimplementedLinkAttributionServer) ConfigurationUpdate(context.Context, *ConfigurationUpdateRequest) (*BaseResponse, error) {
+func (UnimplementedLinkAttributionServer) AppDetailByDomain(context.Context, *AppDetailByDomainRequest) (*AppDetailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AppDetailByDomain not implemented")
+}
+func (UnimplementedLinkAttributionServer) ApiGetCurrentKey(context.Context, *ApiGetCurrentKeyRequest) (*AppDetailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ApiGetCurrentKey not implemented")
+}
+func (UnimplementedLinkAttributionServer) ConfigurationUpdate(context.Context, *ConfigurationUpdateRequest) (*UpsertResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ConfigurationUpdate not implemented")
 }
-func (UnimplementedLinkAttributionServer) ApiKeyGetToken(context.Context, *AppGetTokenRequest) (*BaseResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ApiKeyGetToken not implemented")
-}
-func (UnimplementedLinkAttributionServer) ConfigurationDetail(context.Context, *ConfigurationDetailRequest) (*BaseResponse, error) {
+func (UnimplementedLinkAttributionServer) ConfigurationDetail(context.Context, *ConfigurationDetailRequest) (*ConfigurationDetailResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ConfigurationDetail not implemented")
 }
-func (UnimplementedLinkAttributionServer) LinksBulkCreate(context.Context, *LinksBulkCreateRequest) (*BaseResponse, error) {
+func (UnimplementedLinkAttributionServer) LinksBulkCreate(context.Context, *LinksBulkCreateRequest) (*UpsertListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LinksBulkCreate not implemented")
 }
 func (UnimplementedLinkAttributionServer) mustEmbedUnimplementedLinkAttributionServer() {}
@@ -158,6 +186,24 @@ func _LinkAttribution_AppCreate_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LinkAttribution_AppList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AppListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LinkAttributionServer).AppList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chat.LinkAttribution/AppList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LinkAttributionServer).AppList(ctx, req.(*AppListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _LinkAttribution_AppDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AppDetailRequest)
 	if err := dec(in); err != nil {
@@ -176,6 +222,42 @@ func _LinkAttribution_AppDetail_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LinkAttribution_AppDetailByDomain_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AppDetailByDomainRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LinkAttributionServer).AppDetailByDomain(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chat.LinkAttribution/AppDetailByDomain",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LinkAttributionServer).AppDetailByDomain(ctx, req.(*AppDetailByDomainRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LinkAttribution_ApiGetCurrentKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ApiGetCurrentKeyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LinkAttributionServer).ApiGetCurrentKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chat.LinkAttribution/ApiGetCurrentKey",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LinkAttributionServer).ApiGetCurrentKey(ctx, req.(*ApiGetCurrentKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _LinkAttribution_ConfigurationUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ConfigurationUpdateRequest)
 	if err := dec(in); err != nil {
@@ -190,24 +272,6 @@ func _LinkAttribution_ConfigurationUpdate_Handler(srv interface{}, ctx context.C
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(LinkAttributionServer).ConfigurationUpdate(ctx, req.(*ConfigurationUpdateRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _LinkAttribution_ApiKeyGetToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AppGetTokenRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(LinkAttributionServer).ApiKeyGetToken(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/chat.LinkAttribution/ApiKeyGetToken",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LinkAttributionServer).ApiKeyGetToken(ctx, req.(*AppGetTokenRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -260,16 +324,24 @@ var LinkAttribution_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _LinkAttribution_AppCreate_Handler,
 		},
 		{
+			MethodName: "AppList",
+			Handler:    _LinkAttribution_AppList_Handler,
+		},
+		{
 			MethodName: "AppDetail",
 			Handler:    _LinkAttribution_AppDetail_Handler,
 		},
 		{
-			MethodName: "ConfigurationUpdate",
-			Handler:    _LinkAttribution_ConfigurationUpdate_Handler,
+			MethodName: "AppDetailByDomain",
+			Handler:    _LinkAttribution_AppDetailByDomain_Handler,
 		},
 		{
-			MethodName: "ApiKeyGetToken",
-			Handler:    _LinkAttribution_ApiKeyGetToken_Handler,
+			MethodName: "ApiGetCurrentKey",
+			Handler:    _LinkAttribution_ApiGetCurrentKey_Handler,
+		},
+		{
+			MethodName: "ConfigurationUpdate",
+			Handler:    _LinkAttribution_ConfigurationUpdate_Handler,
 		},
 		{
 			MethodName: "ConfigurationDetail",
