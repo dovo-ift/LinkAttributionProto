@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+
+package chat;
+
+option go_package = "protogen/linkAttribution";
+
+service LinkAttribution {
+  rpc AppCreate(AppCreateRequest) returns (BaseResponse) {}
+  rpc AppDetail(AppDetailRequest) returns (BaseResponse) {}
+
+  rpc ConfigurationUpdate(ConfigurationUpdateRequest) returns (BaseResponse) {}
+
+  rpc ApiKeyGetToken(AppGetTokenRequest) returns (BaseResponse) {}
+
+  rpc ConfigurationDetail(ConfigurationDetailRequest) returns (BaseResponse) {}
+
+  rpc LinksBulkCreate(LinksBulkCreateRequest) returns (BaseResponse) {}
+}
+
+message BaseResponse {
+  google.protobuf.Any data = 1;
+  string message = 2;
+  int32 code = 3;
+}
+
+message AppCreateRequest {
+  string organizationUnid = 1;
+  string name = 2;
+  string timezone = 3;
+}
+
+message AppDetailRequest {
+  string unid = 1;
+  string organizationUnid = 2;
+}
+
+message ConfigurationDetailRequest {
+  string unid = 1;
+  string organizationUnid = 2;
+}
+
+message AppGetTokenRequest {
+  string key = 1;
+  string secret = 2;
+}
+
+message SocialMediaPreview {
+  string title = 1;
+  string description = 2;
+}
+
+message LinksBulkCreateRequest {
+  message AnalyticsTags {
+    string feature = 1;
+    string channel = 2;
+    string campaign = 3;
+    repeated string tags = 4;
+  }
+
+  message LinksCreate {
+    string appUnid = 1;
+    string type = 2;
+    string name = 3;
+    string path = 4;
+    AnalyticsTags analyticsTags = 5;
+    google.protobuf.Any linkData = 6;
+    string iosRedirect = 7;
+    string androidRedirect = 8;
+    bool isWebOnly = 9;
+    SocialMediaPreview socialMediaPreview = 10;
+  }
+
+  repeated LinksCreate links = 1;
+}
+
+message ConfigurationUpdateRequest {
+  message AndroidConfigurations {
+    string uri = 1;
+    string custom_url = 2;
+    bool isSearch = 3;
+    string appPackageName = 4;
+    string sha_256_fingerprints = 5;
+  }
+
+  message IosConfigurations {
+    string uri = 1;
+    string custom_url = 2;
+    bool isSearch = 3;
+    repeated string bundle_identifiers = 4;
+    string appPrefix = 5;
+  }
+
+  string appUnid = 1;
+  string defaultFallbackUrl = 2;
+  AndroidConfigurations androidConfigurations = 3;
+  IosConfigurations iosConfigurations = 4;
+  SocialMediaPreview socialMediaPreview = 5;
+  string domainName = 6;
+  string desktopFallbackUrl = 7;
+  string mobileFallbackUrl = 8;
+}
