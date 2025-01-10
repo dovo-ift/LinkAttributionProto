@@ -101,4 +101,5 @@ message ConfigurationUpdateRequest {
   string domainName = 6;
   string desktopFallbackUrl = 7;
   string mobileFallbackUrl = 8;
+  string unid = 9;
 }

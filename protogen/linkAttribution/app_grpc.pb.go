@@ -26,6 +26,7 @@ type AppServiceClient interface {
 	AppList(ctx context.Context, in *AppListRequest, opts ...grpc.CallOption) (*AppListResponse, error)
 	AppDetail(ctx context.Context, in *AppDetailRequest, opts ...grpc.CallOption) (*AppDetailResponse, error)
 	AppDetailByDomain(ctx context.Context, in *AppDetailByDomainRequest, opts ...grpc.CallOption) (*AppDetailResponse, error)
+	AppUpdate(ctx context.Context, in *AppUpdateRequest, opts ...grpc.CallOption) (*AppUpsertResponse, error)
 }
 
 type appServiceClient struct {
@@ -72,6 +73,15 @@ func (c *appServiceClient) AppDetailByDomain(ctx context.Context, in *AppDetailB
 	return out, nil
 }
 
+func (c *appServiceClient) AppUpdate(ctx context.Context, in *AppUpdateRequest, opts ...grpc.CallOption) (*AppUpsertResponse, error) {
+	out := new(AppUpsertResponse)
+	err := c.cc.Invoke(ctx, "/chat.AppService/AppUpdate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AppServiceServer is the server API for AppService service.
 // All implementations must embed UnimplementedAppServiceServer
 // for forward compatibility
@@ -80,6 +90,7 @@ type AppServiceServer interface {
 	AppList(context.Context, *AppListRequest) (*AppListResponse, error)
 	AppDetail(context.Context, *AppDetailRequest) (*AppDetailResponse, error)
 	AppDetailByDomain(context.Context, *AppDetailByDomainRequest) (*AppDetailResponse, error)
+	AppUpdate(context.Context, *AppUpdateRequest) (*AppUpsertResponse, error)
 	mustEmbedUnimplementedAppServiceServer()
 }
 
@@ -98,6 +109,9 @@ func (UnimplementedAppServiceServer) AppDetail(context.Context, *AppDetailReques
 }
 func (UnimplementedAppServiceServer) AppDetailByDomain(context.Context, *AppDetailByDomainRequest) (*AppDetailResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AppDetailByDomain not implemented")
+}
+func (UnimplementedAppServiceServer) AppUpdate(context.Context, *AppUpdateRequest) (*AppUpsertResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AppUpdate not implemented")
 }
 func (UnimplementedAppServiceServer) mustEmbedUnimplementedAppServiceServer() {}
 
@@ -184,6 +198,24 @@ func _AppService_AppDetailByDomain_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AppService_AppUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AppUpdateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppServiceServer).AppUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chat.AppService/AppUpdate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppServiceServer).AppUpdate(ctx, req.(*AppUpdateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AppService_ServiceDesc is the grpc.ServiceDesc for AppService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -206,6 +238,10 @@ var AppService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AppDetailByDomain",
 			Handler:    _AppService_AppDetailByDomain_Handler,
+		},
+		{
+			MethodName: "AppUpdate",
+			Handler:    _AppService_AppUpdate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -35,7 +35,7 @@ func NewApiKeyServiceClient(cc grpc.ClientConnInterface) ApiKeyServiceClient {
 
 func (c *apiKeyServiceClient) ApiKeyGetCurrentKey(ctx context.Context, in *ApiKeyGetCurrentKeyRequest, opts ...grpc.CallOption) (*ApiKeyGetCurrentKeyResponse, error) {
 	out := new(ApiKeyGetCurrentKeyResponse)
-	err := c.cc.Invoke(ctx, "/chat.ApiKeyService/ApiKeyGetCurrentKey", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/apiKeyPkg.ApiKeyService/ApiKeyGetCurrentKey", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +80,7 @@ func _ApiKeyService_ApiKeyGetCurrentKey_Handler(srv interface{}, ctx context.Con
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/chat.ApiKeyService/ApiKeyGetCurrentKey",
+		FullMethod: "/apiKeyPkg.ApiKeyService/ApiKeyGetCurrentKey",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ApiKeyServiceServer).ApiKeyGetCurrentKey(ctx, req.(*ApiKeyGetCurrentKeyRequest))
@@ -92,7 +92,7 @@ func _ApiKeyService_ApiKeyGetCurrentKey_Handler(srv interface{}, ctx context.Con
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ApiKeyService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "chat.ApiKeyService",
+	ServiceName: "apiKeyPkg.ApiKeyService",
 	HandlerType: (*ApiKeyServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

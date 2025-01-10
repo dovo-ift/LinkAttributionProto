@@ -11,6 +11,7 @@ service AppService {
   rpc AppList(AppListRequest) returns (AppListResponse) {}
   rpc AppDetail(AppDetailRequest) returns (AppDetailResponse) {}
   rpc AppDetailByDomain(AppDetailByDomainRequest) returns (AppDetailResponse) {}
+  rpc AppUpdate(AppUpdateRequest) returns (AppUpsertResponse) {}
 }
 
 message AppUpsert {
@@ -50,6 +51,7 @@ message AppListResponse {
     google.protobuf.Timestamp deletedAt = 4;
     string name = 5;
     string timezone = 6;
+    string organizationUnid = 7;
   }
 
   repeated Data data = 1;
@@ -70,6 +72,7 @@ message AppDetailResponse {
     google.protobuf.Timestamp deletedAt = 4;
     string name = 5;
     string timezone = 6;
+    string organizationUnid = 7;
   }
 
   Data data = 1;
@@ -81,3 +84,9 @@ message AppDetailByDomainRequest {
   string domainName = 1;
 }
 
+message AppUpdateRequest {
+  string unid = 1;
+  string organizationUnid = 2;
+  string name = 3;
+  string timezone = 4;
+}
