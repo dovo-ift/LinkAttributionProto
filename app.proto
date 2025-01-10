@@ -15,9 +15,9 @@ service AppService {
 
 message AppUpsert {
   string unid = 1;
-  google.protobuf.Timestamp created_at = 2;
-  google.protobuf.Timestamp updated_at = 3;
-  google.protobuf.Timestamp deleted_At = 4;
+  google.protobuf.Timestamp createdAt = 2;
+  google.protobuf.Timestamp updatedAt = 3;
+  google.protobuf.Timestamp deletedAt = 4;
 }
 
 message AppUpsertResponse {
@@ -45,9 +45,9 @@ message AppListRequest {
 message AppListResponse {
   message Data {
     string unid = 1;
-    google.protobuf.Timestamp created_at = 2;
-    google.protobuf.Timestamp updated_at = 3;
-    google.protobuf.Timestamp deleted_At = 4;
+    google.protobuf.Timestamp createdAt = 2;
+    google.protobuf.Timestamp updatedAt = 3;
+    google.protobuf.Timestamp deletedAt = 4;
     string name = 5;
     string timezone = 6;
   }
@@ -65,9 +65,9 @@ message AppDetailRequest {
 message AppDetailResponse {
   message Data {
     string unid = 1;
-    google.protobuf.Timestamp created_at = 2;
-    google.protobuf.Timestamp updated_at = 3;
-    google.protobuf.Timestamp deleted_At = 4;
+    google.protobuf.Timestamp createdAt = 2;
+    google.protobuf.Timestamp updatedAt = 3;
+    google.protobuf.Timestamp deletedAt = 4;
     string name = 5;
     string timezone = 6;
   }

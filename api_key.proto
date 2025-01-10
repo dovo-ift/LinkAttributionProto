@@ -2,7 +2,7 @@ syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
 
-package chat;
+package apiKeyPkg;
 
 option go_package = "protogen/linkAttribution";
 
@@ -17,10 +17,10 @@ message ApiKeyGetCurrentKeyRequest {
 
 message ApiKeyGetCurrentKeyResponse {
   message Data {
-    string id = 1;
-    google.protobuf.Timestamp created_at = 2;
-    google.protobuf.Timestamp updated_at = 3;
-    google.protobuf.Timestamp deleted_At = 4;
+    string unid = 1;
+    google.protobuf.Timestamp createdAt = 2;
+    google.protobuf.Timestamp updatedAt = 3;
+    google.protobuf.Timestamp deletedAt = 4;
     string key = 5;
     string secret = 6;
   }

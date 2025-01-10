@@ -13,9 +13,9 @@ service LinkService {
 
 message LinkUpsert {
   string unid = 1;
-  google.protobuf.Timestamp created_at = 2;
-  google.protobuf.Timestamp updated_at = 3;
-  google.protobuf.Timestamp deleted_At = 4;
+  google.protobuf.Timestamp createdAt = 2;
+  google.protobuf.Timestamp updatedAt = 3;
+  google.protobuf.Timestamp deletedAt = 4;
 }
 
 message LinkUpsertResponse {
