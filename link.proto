@@ -43,7 +43,6 @@ message LinksBulkCreateRequest {
   }
 
   message LinksCreate {
-    string appUnid = 1;
     string type = 2;
     string name = 3;
     string path = 4;
@@ -55,7 +54,8 @@ message LinksBulkCreateRequest {
     SocialMediaPreview socialMediaPreview = 10;
   }
 
-  repeated LinksCreate links = 1;
+  string appUnid = 1;
+  repeated LinksCreate links = 2;
 }
 
 message LinksBulkCreateResponse {
