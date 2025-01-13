@@ -8,6 +8,8 @@ option go_package = "protogen/linkAttribution";
 
 service ApiKeyService {
   rpc ApiKeyGetCurrentKey(ApiKeyGetCurrentKeyRequest) returns (ApiKeyGetCurrentKeyResponse) {}
+  rpc ApiKeyReGenerateKey(ApiKeyReGenerateKeyRequest) returns (ApiKeyGenerateKeyResponse) {}
+  rpc ApiKeyReGenerateSecret(ApiKeyReGenerateKeyRequest) returns (ApiKeyGenerateKeyResponse) {}
 }
 
 message ApiKeyGetCurrentKeyRequest {
@@ -17,6 +19,24 @@ message ApiKeyGetCurrentKeyRequest {
 
 message ApiKeyGetCurrentKeyResponse {
   message Data {
+    string unid = 1;
+    google.protobuf.Timestamp createdAt = 2;
+    google.protobuf.Timestamp updatedAt = 3;
+    google.protobuf.Timestamp deletedAt = 4;
+    string key = 5;
+    string secret = 6;
+  }
+  Data data = 1;
+  string message = 2;
+  int32 code = 3;
+}
+
+message ApiKeyReGenerateKeyRequest {
+  string appUnid = 1;
+}
+
+message ApiKeyGenerateKeyResponse {
+   message Data {
     string unid = 1;
     google.protobuf.Timestamp createdAt = 2;
     google.protobuf.Timestamp updatedAt = 3;
