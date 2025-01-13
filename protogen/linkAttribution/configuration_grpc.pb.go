@@ -23,7 +23,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ConfigurationClient interface {
 	ConfigurationUpdate(ctx context.Context, in *ConfigurationUpdateRequest, opts ...grpc.CallOption) (*ConfigurationUpsertResponse, error)
-	ConfigurationDetail(ctx context.Context, in *ConfigurationDetailRequest, opts ...grpc.CallOption) (*ConfigurationDetailResponse, error)
+	ConfigurationDetailByAppUnid(ctx context.Context, in *ConfigurationDetailByAppUnidRequest, opts ...grpc.CallOption) (*ConfigurationDetailByAppUnidResponse, error)
+	ConfigurationIsExistDomain(ctx context.Context, in *ConfigurationIsExistDomainRequest, opts ...grpc.CallOption) (*ConfigurationIsExistDomainResponse, error)
 }
 
 type configurationClient struct {
@@ -43,9 +44,18 @@ func (c *configurationClient) ConfigurationUpdate(ctx context.Context, in *Confi
 	return out, nil
 }
 
-func (c *configurationClient) ConfigurationDetail(ctx context.Context, in *ConfigurationDetailRequest, opts ...grpc.CallOption) (*ConfigurationDetailResponse, error) {
-	out := new(ConfigurationDetailResponse)
-	err := c.cc.Invoke(ctx, "/chat.Configuration/ConfigurationDetail", in, out, opts...)
+func (c *configurationClient) ConfigurationDetailByAppUnid(ctx context.Context, in *ConfigurationDetailByAppUnidRequest, opts ...grpc.CallOption) (*ConfigurationDetailByAppUnidResponse, error) {
+	out := new(ConfigurationDetailByAppUnidResponse)
+	err := c.cc.Invoke(ctx, "/chat.Configuration/ConfigurationDetailByAppUnid", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *configurationClient) ConfigurationIsExistDomain(ctx context.Context, in *ConfigurationIsExistDomainRequest, opts ...grpc.CallOption) (*ConfigurationIsExistDomainResponse, error) {
+	out := new(ConfigurationIsExistDomainResponse)
+	err := c.cc.Invoke(ctx, "/chat.Configuration/ConfigurationIsExistDomain", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +67,8 @@ func (c *configurationClient) ConfigurationDetail(ctx context.Context, in *Confi
 // for forward compatibility
 type ConfigurationServer interface {
 	ConfigurationUpdate(context.Context, *ConfigurationUpdateRequest) (*ConfigurationUpsertResponse, error)
-	ConfigurationDetail(context.Context, *ConfigurationDetailRequest) (*ConfigurationDetailResponse, error)
+	ConfigurationDetailByAppUnid(context.Context, *ConfigurationDetailByAppUnidRequest) (*ConfigurationDetailByAppUnidResponse, error)
+	ConfigurationIsExistDomain(context.Context, *ConfigurationIsExistDomainRequest) (*ConfigurationIsExistDomainResponse, error)
 	mustEmbedUnimplementedConfigurationServer()
 }
 
@@ -68,8 +79,11 @@ type UnimplementedConfigurationServer struct {
 func (UnimplementedConfigurationServer) ConfigurationUpdate(context.Context, *ConfigurationUpdateRequest) (*ConfigurationUpsertResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ConfigurationUpdate not implemented")
 }
-func (UnimplementedConfigurationServer) ConfigurationDetail(context.Context, *ConfigurationDetailRequest) (*ConfigurationDetailResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ConfigurationDetail not implemented")
+func (UnimplementedConfigurationServer) ConfigurationDetailByAppUnid(context.Context, *ConfigurationDetailByAppUnidRequest) (*ConfigurationDetailByAppUnidResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConfigurationDetailByAppUnid not implemented")
+}
+func (UnimplementedConfigurationServer) ConfigurationIsExistDomain(context.Context, *ConfigurationIsExistDomainRequest) (*ConfigurationIsExistDomainResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConfigurationIsExistDomain not implemented")
 }
 func (UnimplementedConfigurationServer) mustEmbedUnimplementedConfigurationServer() {}
 
@@ -102,20 +116,38 @@ func _Configuration_ConfigurationUpdate_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Configuration_ConfigurationDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ConfigurationDetailRequest)
+func _Configuration_ConfigurationDetailByAppUnid_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ConfigurationDetailByAppUnidRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ConfigurationServer).ConfigurationDetail(ctx, in)
+		return srv.(ConfigurationServer).ConfigurationDetailByAppUnid(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/chat.Configuration/ConfigurationDetail",
+		FullMethod: "/chat.Configuration/ConfigurationDetailByAppUnid",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ConfigurationServer).ConfigurationDetail(ctx, req.(*ConfigurationDetailRequest))
+		return srv.(ConfigurationServer).ConfigurationDetailByAppUnid(ctx, req.(*ConfigurationDetailByAppUnidRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Configuration_ConfigurationIsExistDomain_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ConfigurationIsExistDomainRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConfigurationServer).ConfigurationIsExistDomain(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chat.Configuration/ConfigurationIsExistDomain",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConfigurationServer).ConfigurationIsExistDomain(ctx, req.(*ConfigurationIsExistDomainRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -132,8 +164,12 @@ var Configuration_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Configuration_ConfigurationUpdate_Handler,
 		},
 		{
-			MethodName: "ConfigurationDetail",
-			Handler:    _Configuration_ConfigurationDetail_Handler,
+			MethodName: "ConfigurationDetailByAppUnid",
+			Handler:    _Configuration_ConfigurationDetailByAppUnid_Handler,
+		},
+		{
+			MethodName: "ConfigurationIsExistDomain",
+			Handler:    _Configuration_ConfigurationIsExistDomain_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

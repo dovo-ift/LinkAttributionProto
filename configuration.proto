@@ -8,7 +8,8 @@ option go_package = "protogen/linkAttribution";
 
 service Configuration {
   rpc ConfigurationUpdate(ConfigurationUpdateRequest) returns (ConfigurationUpsertResponse) {}
-  rpc ConfigurationDetail(ConfigurationDetailRequest) returns (ConfigurationDetailResponse) {}
+  rpc ConfigurationDetailByAppUnid(ConfigurationDetailByAppUnidRequest) returns (ConfigurationDetailByAppUnidResponse) {}
+  rpc ConfigurationIsExistDomain(ConfigurationIsExistDomainRequest) returns (ConfigurationIsExistDomainResponse) {}
 }
 
 message ConfigurationUpsert {
@@ -35,12 +36,11 @@ message ConfigurationUpsertListResponse {
   int32 code = 3;
 }
 
-message ConfigurationDetailRequest {
-  string unid = 1;
+message ConfigurationDetailByAppUnidRequest {
   string appUnid = 2;
 }
 
-message ConfigurationDetailResponse {
+message ConfigurationDetailByAppUnidResponse {
   message Data {
     message AndroidConfigurations {
       string uri = 1;
@@ -102,4 +102,12 @@ message ConfigurationUpdateRequest {
   string desktopFallbackUrl = 7;
   string mobileFallbackUrl = 8;
   string unid = 9;
+}
+
+message ConfigurationIsExistDomainRequest {
+  string domainName = 1;
+}
+
+message ConfigurationIsExistDomainResponse {
+  bool isExist = 1;
 }
