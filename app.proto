@@ -89,4 +89,6 @@ message AppUpdateRequest {
   string organizationUnid = 2;
   string name = 3;
   string timezone = 4;
+  string key = 5;
+  string secret = 6;
 }
