@@ -23,8 +23,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ApiKeyServiceClient interface {
 	ApiKeyGetCurrentKey(ctx context.Context, in *ApiKeyGetCurrentKeyRequest, opts ...grpc.CallOption) (*ApiKeyGetCurrentKeyResponse, error)
-	ApiKeyReGenerateKey(ctx context.Context, in *ApiKeyReGenerateKeyRequest, opts ...grpc.CallOption) (*ApiKeyGenerateKeyResponse, error)
-	ApiKeyReGenerateSecret(ctx context.Context, in *ApiKeyReGenerateKeyRequest, opts ...grpc.CallOption) (*ApiKeyGenerateKeyResponse, error)
+	ApiKeyReGenerateKey(ctx context.Context, in *ApiKeyGenerateKeyRequest, opts ...grpc.CallOption) (*ApiKeyGenerateKeyResponse, error)
+	ApiKeyReGenerateSecret(ctx context.Context, in *ApiKeyGenerateKeyRequest, opts ...grpc.CallOption) (*ApiKeyGenerateKeyResponse, error)
 }
 
 type apiKeyServiceClient struct {
@@ -44,7 +44,7 @@ func (c *apiKeyServiceClient) ApiKeyGetCurrentKey(ctx context.Context, in *ApiKe
 	return out, nil
 }
 
-func (c *apiKeyServiceClient) ApiKeyReGenerateKey(ctx context.Context, in *ApiKeyReGenerateKeyRequest, opts ...grpc.CallOption) (*ApiKeyGenerateKeyResponse, error) {
+func (c *apiKeyServiceClient) ApiKeyReGenerateKey(ctx context.Context, in *ApiKeyGenerateKeyRequest, opts ...grpc.CallOption) (*ApiKeyGenerateKeyResponse, error) {
 	out := new(ApiKeyGenerateKeyResponse)
 	err := c.cc.Invoke(ctx, "/apiKeyPkg.ApiKeyService/ApiKeyReGenerateKey", in, out, opts...)
 	if err != nil {
@@ -53,7 +53,7 @@ func (c *apiKeyServiceClient) ApiKeyReGenerateKey(ctx context.Context, in *ApiKe
 	return out, nil
 }
 
-func (c *apiKeyServiceClient) ApiKeyReGenerateSecret(ctx context.Context, in *ApiKeyReGenerateKeyRequest, opts ...grpc.CallOption) (*ApiKeyGenerateKeyResponse, error) {
+func (c *apiKeyServiceClient) ApiKeyReGenerateSecret(ctx context.Context, in *ApiKeyGenerateKeyRequest, opts ...grpc.CallOption) (*ApiKeyGenerateKeyResponse, error) {
 	out := new(ApiKeyGenerateKeyResponse)
 	err := c.cc.Invoke(ctx, "/apiKeyPkg.ApiKeyService/ApiKeyReGenerateSecret", in, out, opts...)
 	if err != nil {
@@ -67,8 +67,8 @@ func (c *apiKeyServiceClient) ApiKeyReGenerateSecret(ctx context.Context, in *Ap
 // for forward compatibility
 type ApiKeyServiceServer interface {
 	ApiKeyGetCurrentKey(context.Context, *ApiKeyGetCurrentKeyRequest) (*ApiKeyGetCurrentKeyResponse, error)
-	ApiKeyReGenerateKey(context.Context, *ApiKeyReGenerateKeyRequest) (*ApiKeyGenerateKeyResponse, error)
-	ApiKeyReGenerateSecret(context.Context, *ApiKeyReGenerateKeyRequest) (*ApiKeyGenerateKeyResponse, error)
+	ApiKeyReGenerateKey(context.Context, *ApiKeyGenerateKeyRequest) (*ApiKeyGenerateKeyResponse, error)
+	ApiKeyReGenerateSecret(context.Context, *ApiKeyGenerateKeyRequest) (*ApiKeyGenerateKeyResponse, error)
 	mustEmbedUnimplementedApiKeyServiceServer()
 }
 
@@ -79,10 +79,10 @@ type UnimplementedApiKeyServiceServer struct {
 func (UnimplementedApiKeyServiceServer) ApiKeyGetCurrentKey(context.Context, *ApiKeyGetCurrentKeyRequest) (*ApiKeyGetCurrentKeyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ApiKeyGetCurrentKey not implemented")
 }
-func (UnimplementedApiKeyServiceServer) ApiKeyReGenerateKey(context.Context, *ApiKeyReGenerateKeyRequest) (*ApiKeyGenerateKeyResponse, error) {
+func (UnimplementedApiKeyServiceServer) ApiKeyReGenerateKey(context.Context, *ApiKeyGenerateKeyRequest) (*ApiKeyGenerateKeyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ApiKeyReGenerateKey not implemented")
 }
-func (UnimplementedApiKeyServiceServer) ApiKeyReGenerateSecret(context.Context, *ApiKeyReGenerateKeyRequest) (*ApiKeyGenerateKeyResponse, error) {
+func (UnimplementedApiKeyServiceServer) ApiKeyReGenerateSecret(context.Context, *ApiKeyGenerateKeyRequest) (*ApiKeyGenerateKeyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ApiKeyReGenerateSecret not implemented")
 }
 func (UnimplementedApiKeyServiceServer) mustEmbedUnimplementedApiKeyServiceServer() {}
@@ -117,7 +117,7 @@ func _ApiKeyService_ApiKeyGetCurrentKey_Handler(srv interface{}, ctx context.Con
 }
 
 func _ApiKeyService_ApiKeyReGenerateKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ApiKeyReGenerateKeyRequest)
+	in := new(ApiKeyGenerateKeyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -129,13 +129,13 @@ func _ApiKeyService_ApiKeyReGenerateKey_Handler(srv interface{}, ctx context.Con
 		FullMethod: "/apiKeyPkg.ApiKeyService/ApiKeyReGenerateKey",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ApiKeyServiceServer).ApiKeyReGenerateKey(ctx, req.(*ApiKeyReGenerateKeyRequest))
+		return srv.(ApiKeyServiceServer).ApiKeyReGenerateKey(ctx, req.(*ApiKeyGenerateKeyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _ApiKeyService_ApiKeyReGenerateSecret_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ApiKeyReGenerateKeyRequest)
+	in := new(ApiKeyGenerateKeyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -147,7 +147,7 @@ func _ApiKeyService_ApiKeyReGenerateSecret_Handler(srv interface{}, ctx context.
 		FullMethod: "/apiKeyPkg.ApiKeyService/ApiKeyReGenerateSecret",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ApiKeyServiceServer).ApiKeyReGenerateSecret(ctx, req.(*ApiKeyReGenerateKeyRequest))
+		return srv.(ApiKeyServiceServer).ApiKeyReGenerateSecret(ctx, req.(*ApiKeyGenerateKeyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
