@@ -27,6 +27,7 @@ type AppServiceClient interface {
 	AppDetail(ctx context.Context, in *AppDetailRequest, opts ...grpc.CallOption) (*AppDetailResponse, error)
 	AppDetailByDomain(ctx context.Context, in *AppDetailByDomainRequest, opts ...grpc.CallOption) (*AppDetailResponse, error)
 	AppUpdate(ctx context.Context, in *AppUpdateRequest, opts ...grpc.CallOption) (*AppUpsertResponse, error)
+	AppDetailByApiKey(ctx context.Context, in *AppDetailByApiKeyRequest, opts ...grpc.CallOption) (*AppDetailResponse, error)
 }
 
 type appServiceClient struct {
@@ -82,6 +83,15 @@ func (c *appServiceClient) AppUpdate(ctx context.Context, in *AppUpdateRequest, 
 	return out, nil
 }
 
+func (c *appServiceClient) AppDetailByApiKey(ctx context.Context, in *AppDetailByApiKeyRequest, opts ...grpc.CallOption) (*AppDetailResponse, error) {
+	out := new(AppDetailResponse)
+	err := c.cc.Invoke(ctx, "/chat.AppService/AppDetailByApiKey", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AppServiceServer is the server API for AppService service.
 // All implementations must embed UnimplementedAppServiceServer
 // for forward compatibility
@@ -91,6 +101,7 @@ type AppServiceServer interface {
 	AppDetail(context.Context, *AppDetailRequest) (*AppDetailResponse, error)
 	AppDetailByDomain(context.Context, *AppDetailByDomainRequest) (*AppDetailResponse, error)
 	AppUpdate(context.Context, *AppUpdateRequest) (*AppUpsertResponse, error)
+	AppDetailByApiKey(context.Context, *AppDetailByApiKeyRequest) (*AppDetailResponse, error)
 	mustEmbedUnimplementedAppServiceServer()
 }
 
@@ -112,6 +123,9 @@ func (UnimplementedAppServiceServer) AppDetailByDomain(context.Context, *AppDeta
 }
 func (UnimplementedAppServiceServer) AppUpdate(context.Context, *AppUpdateRequest) (*AppUpsertResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AppUpdate not implemented")
+}
+func (UnimplementedAppServiceServer) AppDetailByApiKey(context.Context, *AppDetailByApiKeyRequest) (*AppDetailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AppDetailByApiKey not implemented")
 }
 func (UnimplementedAppServiceServer) mustEmbedUnimplementedAppServiceServer() {}
 
@@ -216,6 +230,24 @@ func _AppService_AppUpdate_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AppService_AppDetailByApiKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AppDetailByApiKeyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppServiceServer).AppDetailByApiKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chat.AppService/AppDetailByApiKey",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppServiceServer).AppDetailByApiKey(ctx, req.(*AppDetailByApiKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AppService_ServiceDesc is the grpc.ServiceDesc for AppService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -242,6 +274,10 @@ var AppService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AppUpdate",
 			Handler:    _AppService_AppUpdate_Handler,
+		},
+		{
+			MethodName: "AppDetailByApiKey",
+			Handler:    _AppService_AppDetailByApiKey_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -12,6 +12,7 @@ service AppService {
   rpc AppDetail(AppDetailRequest) returns (AppDetailResponse) {}
   rpc AppDetailByDomain(AppDetailByDomainRequest) returns (AppDetailResponse) {}
   rpc AppUpdate(AppUpdateRequest) returns (AppUpsertResponse) {}
+  rpc AppDetailByApiKey(AppDetailByApiKeyRequest) returns (AppDetailResponse) {}
 }
 
 message AppUpsert {
@@ -91,4 +92,9 @@ message AppUpdateRequest {
   string timezone = 4;
   string key = 5;
   string secret = 6;
+}
+
+message AppDetailByApiKeyRequest {
+  string key = 1;
+  string secret = 2;
 }
