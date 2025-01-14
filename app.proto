@@ -13,6 +13,7 @@ service AppService {
   rpc AppDetailByDomain(AppDetailByDomainRequest) returns (AppDetailResponse) {}
   rpc AppUpdate(AppUpdateRequest) returns (AppUpsertResponse) {}
   rpc AppDetailByApiKey(AppDetailByApiKeyRequest) returns (AppDetailResponse) {}
+  rpc AppRemove(AppRemoveRequest) returns (AppUpsertResponse) {}
 }
 
 message AppUpsert {
@@ -97,4 +98,9 @@ message AppUpdateRequest {
 message AppDetailByApiKeyRequest {
   string key = 1;
   string secret = 2;
+}
+
+message AppRemoveRequest {
+  string organizationUnid = 1;
+  string unid = 2;
 }

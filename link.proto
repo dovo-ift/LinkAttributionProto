@@ -41,21 +41,24 @@ message LinksBulkCreateRequest {
     string title = 1;
     string description = 2;
   }
-
-  message LinksCreate {
-    string type = 2;
-    string name = 3;
-    string path = 4;
-    AnalyticsTags analyticsTags = 5;
-    google.protobuf.Any linkData = 6;
+  message Attributes {
     string iosRedirect = 7;
     string androidRedirect = 8;
     bool isWebOnly = 9;
-    SocialMediaPreview socialMediaPreview = 10;
+  }
+
+  message Link {
+    string type = 1;
+    string name = 2;
+    string description = 3;
+    string path = 4;
+    AnalyticsTags analyticsTags = 5;
+    google.protobuf.Any Attributes = 6;
+    SocialMediaPreview socialMediaPreview = 7;
   }
 
   string appUnid = 1;
-  repeated LinksCreate links = 2;
+  repeated Link links = 2;
 }
 
 message LinksBulkCreateResponse {
