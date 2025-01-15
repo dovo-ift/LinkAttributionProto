@@ -9,6 +9,8 @@ option go_package = "protogen/linkAttribution";
 
 service LinkService {
   rpc LinksBulkCreate(LinksBulkCreateRequest) returns (LinkUpsertListResponse) {}
+  rpc LinkRemove(LinkRemoveRequest) returns (LinkUpsertResponse) {}
+  rpc LinkUpdate(Link) returns (LinkUpsertResponse) {}
 }
 
 message LinkUpsert {
@@ -30,7 +32,7 @@ message LinkUpsertListResponse {
   int32 code = 3;
 }
 
-message LinksBulkCreateRequest {
+message Link {
   message AnalyticsTags {
     string feature = 1;
     string channel = 2;
@@ -41,22 +43,18 @@ message LinksBulkCreateRequest {
     string title = 1;
     string description = 2;
   }
-  message Attributes {
-    string iosRedirect = 7;
-    string androidRedirect = 8;
-    bool isWebOnly = 9;
-  }
+  string type = 1;
+  string name = 2;
+  string description = 3;
+  string path = 4;
+  AnalyticsTags analyticsTags = 5;
+  google.protobuf.Any Attributes = 6;
+  SocialMediaPreview socialMediaPreview = 7;
+  string appUnid = 8;
+  string unid = 9;
+}
 
-  message Link {
-    string type = 1;
-    string name = 2;
-    string description = 3;
-    string path = 4;
-    AnalyticsTags analyticsTags = 5;
-    google.protobuf.Any Attributes = 6;
-    SocialMediaPreview socialMediaPreview = 7;
-  }
-
+message LinksBulkCreateRequest {
   string appUnid = 1;
   repeated Link links = 2;
 }
@@ -65,4 +63,9 @@ message LinksBulkCreateResponse {
   LinkUpsert data = 1;
   string message = 2;
   int32 code = 3;
+}
+
+message LinkRemoveRequest {
+  string unid = 1;
+  string appUnid = 2;
 }

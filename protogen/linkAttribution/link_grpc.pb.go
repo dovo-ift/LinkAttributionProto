@@ -23,6 +23,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LinkServiceClient interface {
 	LinksBulkCreate(ctx context.Context, in *LinksBulkCreateRequest, opts ...grpc.CallOption) (*LinkUpsertListResponse, error)
+	LinkRemove(ctx context.Context, in *LinkRemoveRequest, opts ...grpc.CallOption) (*LinkUpsertResponse, error)
+	LinkUpdate(ctx context.Context, in *Link, opts ...grpc.CallOption) (*LinkUpsertResponse, error)
 }
 
 type linkServiceClient struct {
@@ -42,11 +44,31 @@ func (c *linkServiceClient) LinksBulkCreate(ctx context.Context, in *LinksBulkCr
 	return out, nil
 }
 
+func (c *linkServiceClient) LinkRemove(ctx context.Context, in *LinkRemoveRequest, opts ...grpc.CallOption) (*LinkUpsertResponse, error) {
+	out := new(LinkUpsertResponse)
+	err := c.cc.Invoke(ctx, "/chat.LinkService/LinkRemove", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *linkServiceClient) LinkUpdate(ctx context.Context, in *Link, opts ...grpc.CallOption) (*LinkUpsertResponse, error) {
+	out := new(LinkUpsertResponse)
+	err := c.cc.Invoke(ctx, "/chat.LinkService/LinkUpdate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LinkServiceServer is the server API for LinkService service.
 // All implementations must embed UnimplementedLinkServiceServer
 // for forward compatibility
 type LinkServiceServer interface {
 	LinksBulkCreate(context.Context, *LinksBulkCreateRequest) (*LinkUpsertListResponse, error)
+	LinkRemove(context.Context, *LinkRemoveRequest) (*LinkUpsertResponse, error)
+	LinkUpdate(context.Context, *Link) (*LinkUpsertResponse, error)
 	mustEmbedUnimplementedLinkServiceServer()
 }
 
@@ -56,6 +78,12 @@ type UnimplementedLinkServiceServer struct {
 
 func (UnimplementedLinkServiceServer) LinksBulkCreate(context.Context, *LinksBulkCreateRequest) (*LinkUpsertListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LinksBulkCreate not implemented")
+}
+func (UnimplementedLinkServiceServer) LinkRemove(context.Context, *LinkRemoveRequest) (*LinkUpsertResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LinkRemove not implemented")
+}
+func (UnimplementedLinkServiceServer) LinkUpdate(context.Context, *Link) (*LinkUpsertResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LinkUpdate not implemented")
 }
 func (UnimplementedLinkServiceServer) mustEmbedUnimplementedLinkServiceServer() {}
 
@@ -88,6 +116,42 @@ func _LinkService_LinksBulkCreate_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LinkService_LinkRemove_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LinkRemoveRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LinkServiceServer).LinkRemove(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chat.LinkService/LinkRemove",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LinkServiceServer).LinkRemove(ctx, req.(*LinkRemoveRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LinkService_LinkUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Link)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LinkServiceServer).LinkUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chat.LinkService/LinkUpdate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LinkServiceServer).LinkUpdate(ctx, req.(*Link))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // LinkService_ServiceDesc is the grpc.ServiceDesc for LinkService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -98,6 +162,14 @@ var LinkService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LinksBulkCreate",
 			Handler:    _LinkService_LinksBulkCreate_Handler,
+		},
+		{
+			MethodName: "LinkRemove",
+			Handler:    _LinkService_LinkRemove_Handler,
+		},
+		{
+			MethodName: "LinkUpdate",
+			Handler:    _LinkService_LinkUpdate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
