@@ -86,7 +86,8 @@ message LinkGetListResponse {
 }
 
 message LinkGetDetailByPathRequest {
-  string path = 1;
+  string appUnid = 1;
+  string path = 2;
 }
 
 message LinkDetailResponse {
