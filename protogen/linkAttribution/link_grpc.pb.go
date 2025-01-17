@@ -26,6 +26,7 @@ type LinkServiceClient interface {
 	LinkRemove(ctx context.Context, in *LinkRemoveRequest, opts ...grpc.CallOption) (*LinkUpsertResponse, error)
 	LinkUpdate(ctx context.Context, in *Link, opts ...grpc.CallOption) (*LinkUpsertResponse, error)
 	LinkGetList(ctx context.Context, in *LinkGetListRequest, opts ...grpc.CallOption) (*LinkGetListResponse, error)
+	LinkGetDetailByPath(ctx context.Context, in *LinkGetDetailByPathRequest, opts ...grpc.CallOption) (*LinkDetailResponse, error)
 }
 
 type linkServiceClient struct {
@@ -72,6 +73,15 @@ func (c *linkServiceClient) LinkGetList(ctx context.Context, in *LinkGetListRequ
 	return out, nil
 }
 
+func (c *linkServiceClient) LinkGetDetailByPath(ctx context.Context, in *LinkGetDetailByPathRequest, opts ...grpc.CallOption) (*LinkDetailResponse, error) {
+	out := new(LinkDetailResponse)
+	err := c.cc.Invoke(ctx, "/chat.LinkService/LinkGetDetailByPath", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LinkServiceServer is the server API for LinkService service.
 // All implementations must embed UnimplementedLinkServiceServer
 // for forward compatibility
@@ -80,6 +90,7 @@ type LinkServiceServer interface {
 	LinkRemove(context.Context, *LinkRemoveRequest) (*LinkUpsertResponse, error)
 	LinkUpdate(context.Context, *Link) (*LinkUpsertResponse, error)
 	LinkGetList(context.Context, *LinkGetListRequest) (*LinkGetListResponse, error)
+	LinkGetDetailByPath(context.Context, *LinkGetDetailByPathRequest) (*LinkDetailResponse, error)
 	mustEmbedUnimplementedLinkServiceServer()
 }
 
@@ -98,6 +109,9 @@ func (UnimplementedLinkServiceServer) LinkUpdate(context.Context, *Link) (*LinkU
 }
 func (UnimplementedLinkServiceServer) LinkGetList(context.Context, *LinkGetListRequest) (*LinkGetListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LinkGetList not implemented")
+}
+func (UnimplementedLinkServiceServer) LinkGetDetailByPath(context.Context, *LinkGetDetailByPathRequest) (*LinkDetailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LinkGetDetailByPath not implemented")
 }
 func (UnimplementedLinkServiceServer) mustEmbedUnimplementedLinkServiceServer() {}
 
@@ -184,6 +198,24 @@ func _LinkService_LinkGetList_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LinkService_LinkGetDetailByPath_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LinkGetDetailByPathRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LinkServiceServer).LinkGetDetailByPath(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chat.LinkService/LinkGetDetailByPath",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LinkServiceServer).LinkGetDetailByPath(ctx, req.(*LinkGetDetailByPathRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // LinkService_ServiceDesc is the grpc.ServiceDesc for LinkService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -206,6 +238,10 @@ var LinkService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LinkGetList",
 			Handler:    _LinkService_LinkGetList_Handler,
+		},
+		{
+			MethodName: "LinkGetDetailByPath",
+			Handler:    _LinkService_LinkGetDetailByPath_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

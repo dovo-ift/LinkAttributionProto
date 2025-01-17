@@ -12,6 +12,7 @@ service LinkService {
   rpc LinkRemove(LinkRemoveRequest) returns (LinkUpsertResponse) {}
   rpc LinkUpdate(Link) returns (LinkUpsertResponse) {}
   rpc LinkGetList(LinkGetListRequest) returns (LinkGetListResponse) {}
+  rpc LinkGetDetailByPath(LinkGetDetailByPathRequest) returns (LinkDetailResponse) {}
 }
 
 message LinkUpsert {
@@ -82,4 +83,12 @@ message LinkGetListRequest {
 
 message LinkGetListResponse {
   repeated Link data = 1;
+}
+
+message LinkGetDetailByPathRequest {
+  string path = 1;
+}
+
+message LinkDetailResponse {
+  Link data = 1;
 }
