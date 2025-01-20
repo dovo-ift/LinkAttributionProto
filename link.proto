@@ -1,6 +1,5 @@
 syntax = "proto3";
 
-import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 
 package chat;
@@ -50,7 +49,7 @@ message Link {
   string description = 3;
   string path = 4;
   AnalyticsTags analyticsTags = 5;
-  google.protobuf.Struct attributes = 6;
+  string attributes = 6;
   SocialMediaPreview socialMediaPreview = 7;
   string appUnid = 8;
   string unid = 9;
@@ -88,7 +87,6 @@ message LinkGetListResponse {
 message LinkGetDetailByPathRequest {
   string appUnid = 1;
   string path = 2;
-  string screen_size = 3;
 }
 
 message LinkDetailResponse {
