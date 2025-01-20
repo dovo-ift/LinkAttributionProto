@@ -24,7 +24,9 @@ message TrackingClickUpsertResponse {
 }
 
 message TrackingClickCreateRequest {
-  string link_unid = 1;
-  string user_agent = 3;
+  string linkUnid = 1;
+  string userAgent = 3;
   string ip = 4;
+  int32 screenWidth = 5;
+  int32 screenHeight = 6;
 }
