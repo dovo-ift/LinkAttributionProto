@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package chat;
+
+option go_package = "protogen/linkAttribution";
+
+service ClientActivityService {
+  rpc ClientActivityCreate(ClientActivityCreateRequest) returns (ClientActivityUpsertResponse) {}
+}
+
+message ClientActivityUpsert {
+  string unid = 1;
+  google.protobuf.Timestamp createdAt = 2;
+  google.protobuf.Timestamp updatedAt = 3;
+  google.protobuf.Timestamp deletedAt = 4;
+}
+
+message ClientActivityUpsertResponse {
+  ClientActivityUpsert data = 1;
+  string message = 2;
+  int32 code = 3;
+}
+
+message ClientActivityCreateRequest {
+  string appUnid = 1;
+  string key = 2;
+  string userAgent = 3;
+  string ip = 4;
+  string appIdentifier = 5;
+  string appVersion = 6;
+  string sdkVersion = 7;
+  string deviceModel = 8;
+  int32 screenWidth = 9;
+  int32 screenHeight = 10;
+  string resolution = 11;
+}
