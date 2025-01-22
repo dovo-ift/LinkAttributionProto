@@ -18,86 +18,86 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// ClientActivityServiceClient is the client API for ClientActivityService service.
+// ClientSessionServiceClient is the client API for ClientSessionService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type ClientActivityServiceClient interface {
-	ClientActivityCreate(ctx context.Context, in *ClientActivityCreateRequest, opts ...grpc.CallOption) (*ClientActivityUpsertResponse, error)
+type ClientSessionServiceClient interface {
+	ClientSessionCreate(ctx context.Context, in *ClientSessionCreateRequest, opts ...grpc.CallOption) (*ClientSessionUpsertResponse, error)
 }
 
-type clientActivityServiceClient struct {
+type clientSessionServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewClientActivityServiceClient(cc grpc.ClientConnInterface) ClientActivityServiceClient {
-	return &clientActivityServiceClient{cc}
+func NewClientSessionServiceClient(cc grpc.ClientConnInterface) ClientSessionServiceClient {
+	return &clientSessionServiceClient{cc}
 }
 
-func (c *clientActivityServiceClient) ClientActivityCreate(ctx context.Context, in *ClientActivityCreateRequest, opts ...grpc.CallOption) (*ClientActivityUpsertResponse, error) {
-	out := new(ClientActivityUpsertResponse)
-	err := c.cc.Invoke(ctx, "/chat.ClientActivityService/ClientActivityCreate", in, out, opts...)
+func (c *clientSessionServiceClient) ClientSessionCreate(ctx context.Context, in *ClientSessionCreateRequest, opts ...grpc.CallOption) (*ClientSessionUpsertResponse, error) {
+	out := new(ClientSessionUpsertResponse)
+	err := c.cc.Invoke(ctx, "/chat.ClientSessionService/ClientSessionCreate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// ClientActivityServiceServer is the server API for ClientActivityService service.
-// All implementations must embed UnimplementedClientActivityServiceServer
+// ClientSessionServiceServer is the server API for ClientSessionService service.
+// All implementations must embed UnimplementedClientSessionServiceServer
 // for forward compatibility
-type ClientActivityServiceServer interface {
-	ClientActivityCreate(context.Context, *ClientActivityCreateRequest) (*ClientActivityUpsertResponse, error)
-	mustEmbedUnimplementedClientActivityServiceServer()
+type ClientSessionServiceServer interface {
+	ClientSessionCreate(context.Context, *ClientSessionCreateRequest) (*ClientSessionUpsertResponse, error)
+	mustEmbedUnimplementedClientSessionServiceServer()
 }
 
-// UnimplementedClientActivityServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedClientActivityServiceServer struct {
+// UnimplementedClientSessionServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedClientSessionServiceServer struct {
 }
 
-func (UnimplementedClientActivityServiceServer) ClientActivityCreate(context.Context, *ClientActivityCreateRequest) (*ClientActivityUpsertResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ClientActivityCreate not implemented")
+func (UnimplementedClientSessionServiceServer) ClientSessionCreate(context.Context, *ClientSessionCreateRequest) (*ClientSessionUpsertResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ClientSessionCreate not implemented")
 }
-func (UnimplementedClientActivityServiceServer) mustEmbedUnimplementedClientActivityServiceServer() {}
+func (UnimplementedClientSessionServiceServer) mustEmbedUnimplementedClientSessionServiceServer() {}
 
-// UnsafeClientActivityServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to ClientActivityServiceServer will
+// UnsafeClientSessionServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ClientSessionServiceServer will
 // result in compilation errors.
-type UnsafeClientActivityServiceServer interface {
-	mustEmbedUnimplementedClientActivityServiceServer()
+type UnsafeClientSessionServiceServer interface {
+	mustEmbedUnimplementedClientSessionServiceServer()
 }
 
-func RegisterClientActivityServiceServer(s grpc.ServiceRegistrar, srv ClientActivityServiceServer) {
-	s.RegisterService(&ClientActivityService_ServiceDesc, srv)
+func RegisterClientSessionServiceServer(s grpc.ServiceRegistrar, srv ClientSessionServiceServer) {
+	s.RegisterService(&ClientSessionService_ServiceDesc, srv)
 }
 
-func _ClientActivityService_ClientActivityCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ClientActivityCreateRequest)
+func _ClientSessionService_ClientSessionCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ClientSessionCreateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ClientActivityServiceServer).ClientActivityCreate(ctx, in)
+		return srv.(ClientSessionServiceServer).ClientSessionCreate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/chat.ClientActivityService/ClientActivityCreate",
+		FullMethod: "/chat.ClientSessionService/ClientSessionCreate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ClientActivityServiceServer).ClientActivityCreate(ctx, req.(*ClientActivityCreateRequest))
+		return srv.(ClientSessionServiceServer).ClientSessionCreate(ctx, req.(*ClientSessionCreateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// ClientActivityService_ServiceDesc is the grpc.ServiceDesc for ClientActivityService service.
+// ClientSessionService_ServiceDesc is the grpc.ServiceDesc for ClientSessionService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var ClientActivityService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "chat.ClientActivityService",
-	HandlerType: (*ClientActivityServiceServer)(nil),
+var ClientSessionService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "chat.ClientSessionService",
+	HandlerType: (*ClientSessionServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "ClientActivityCreate",
-			Handler:    _ClientActivityService_ClientActivityCreate_Handler,
+			MethodName: "ClientSessionCreate",
+			Handler:    _ClientSessionService_ClientSessionCreate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -6,26 +6,30 @@ package chat;
 
 option go_package = "protogen/linkAttribution";
 
-service ClientActivityService {
-  rpc ClientActivityCreate(ClientActivityCreateRequest) returns (ClientActivityUpsertResponse) {}
+service ClientSessionService {
+  rpc ClientSessionCreate(ClientSessionCreateRequest) returns (ClientSessionUpsertResponse) {}
 }
 
-message ClientActivityUpsert {
+message ClientSessionUpsert {
   string unid = 1;
   google.protobuf.Timestamp createdAt = 2;
   google.protobuf.Timestamp updatedAt = 3;
   google.protobuf.Timestamp deletedAt = 4;
 }
 
-message ClientActivityUpsertResponse {
-  ClientActivityUpsert data = 1;
+message ClientSessionUpsertResponse {
+  ClientSessionUpsert data = 1;
   string message = 2;
   int32 code = 3;
 }
 
-message ClientActivityCreateRequest {
+message ClientSessionSecurity {
   string appUnid = 1;
   string key = 2;
+}
+
+message ClientSessionCreateRequest {
+  ClientSessionSecurity security = 1;
   string userAgent = 3;
   string ip = 4;
   string appIdentifier = 5;
