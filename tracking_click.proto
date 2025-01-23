@@ -15,12 +15,18 @@ message TrackingClickUpsert {
   google.protobuf.Timestamp createdAt = 2;
   google.protobuf.Timestamp updatedAt = 3;
   google.protobuf.Timestamp deletedAt = 4;
+  string linkUnid = 5;
 }
 
 message TrackingClickUpsertResponse {
   TrackingClickUpsert data = 1;
   string message = 2;
   int32 code = 3;
+}
+
+message TrackingClickSecurity {
+  string appUnid = 1;
+  string key = 2;
 }
 
 message TrackingClickCreateRequest {
@@ -30,4 +36,8 @@ message TrackingClickCreateRequest {
   int32 screenWidth = 5;
   int32 screenHeight = 6;
   string resolution = 7;
+  string apiFrom = 8;
+  TrackingClickSecurity security = 9;
+  string domain = 10;
+  string path = 11;
 }

@@ -84,9 +84,16 @@ message LinkGetListResponse {
   repeated Link data = 1;
 }
 
+message LinkSecurity {
+  string appUnid = 1;
+  string key = 2;
+}
+
 message LinkGetDetailByPathRequest {
   string appUnid = 1;
   string path = 2;
+  string apiFrom = 3;
+  LinkSecurity security = 4;
 }
 
 message LinkDetailResponse {
