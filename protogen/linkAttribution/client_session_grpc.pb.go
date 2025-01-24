@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.21.12
-// source: LinkAttributionProto/client_activity.proto
+// source: LinkAttributionProto/client_session.proto
 
 package linkAttribution
 
@@ -101,5 +101,5 @@ var ClientSessionService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "LinkAttributionProto/client_activity.proto",
+	Metadata: "LinkAttributionProto/client_session.proto",
 }
