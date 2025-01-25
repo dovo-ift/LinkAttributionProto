@@ -38,6 +38,6 @@ message TrackingClickCreateRequest {
   string resolution = 7;
   string apiFrom = 8;
   TrackingClickSecurity security = 9;
-  string client_session_id = 10;
+  string client_session_unid = 10;
   //  string path = 11;
 }
