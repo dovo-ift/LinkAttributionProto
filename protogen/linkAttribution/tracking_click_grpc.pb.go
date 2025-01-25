@@ -23,6 +23,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TrackingClickServiceClient interface {
 	TrackingClickCreate(ctx context.Context, in *TrackingClickCreateRequest, opts ...grpc.CallOption) (*TrackingClickUpsertResponse, error)
+	TrackingClickDetailByQuery(ctx context.Context, in *TrackingClickDetailByQueryRequest, opts ...grpc.CallOption) (*TrackingClickDetailResponse, error)
+	TrackingClickUpdateClientSessionUnid(ctx context.Context, in *TrackingClickUpdateClientSessionUnidRequest, opts ...grpc.CallOption) (*TrackingClickUpsertResponse, error)
 }
 
 type trackingClickServiceClient struct {
@@ -42,11 +44,31 @@ func (c *trackingClickServiceClient) TrackingClickCreate(ctx context.Context, in
 	return out, nil
 }
 
+func (c *trackingClickServiceClient) TrackingClickDetailByQuery(ctx context.Context, in *TrackingClickDetailByQueryRequest, opts ...grpc.CallOption) (*TrackingClickDetailResponse, error) {
+	out := new(TrackingClickDetailResponse)
+	err := c.cc.Invoke(ctx, "/chat.TrackingClickService/TrackingClickDetailByQuery", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *trackingClickServiceClient) TrackingClickUpdateClientSessionUnid(ctx context.Context, in *TrackingClickUpdateClientSessionUnidRequest, opts ...grpc.CallOption) (*TrackingClickUpsertResponse, error) {
+	out := new(TrackingClickUpsertResponse)
+	err := c.cc.Invoke(ctx, "/chat.TrackingClickService/TrackingClickUpdateClientSessionUnid", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TrackingClickServiceServer is the server API for TrackingClickService service.
 // All implementations must embed UnimplementedTrackingClickServiceServer
 // for forward compatibility
 type TrackingClickServiceServer interface {
 	TrackingClickCreate(context.Context, *TrackingClickCreateRequest) (*TrackingClickUpsertResponse, error)
+	TrackingClickDetailByQuery(context.Context, *TrackingClickDetailByQueryRequest) (*TrackingClickDetailResponse, error)
+	TrackingClickUpdateClientSessionUnid(context.Context, *TrackingClickUpdateClientSessionUnidRequest) (*TrackingClickUpsertResponse, error)
 	mustEmbedUnimplementedTrackingClickServiceServer()
 }
 
@@ -56,6 +78,12 @@ type UnimplementedTrackingClickServiceServer struct {
 
 func (UnimplementedTrackingClickServiceServer) TrackingClickCreate(context.Context, *TrackingClickCreateRequest) (*TrackingClickUpsertResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TrackingClickCreate not implemented")
+}
+func (UnimplementedTrackingClickServiceServer) TrackingClickDetailByQuery(context.Context, *TrackingClickDetailByQueryRequest) (*TrackingClickDetailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TrackingClickDetailByQuery not implemented")
+}
+func (UnimplementedTrackingClickServiceServer) TrackingClickUpdateClientSessionUnid(context.Context, *TrackingClickUpdateClientSessionUnidRequest) (*TrackingClickUpsertResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TrackingClickUpdateClientSessionUnid not implemented")
 }
 func (UnimplementedTrackingClickServiceServer) mustEmbedUnimplementedTrackingClickServiceServer() {}
 
@@ -88,6 +116,42 @@ func _TrackingClickService_TrackingClickCreate_Handler(srv interface{}, ctx cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TrackingClickService_TrackingClickDetailByQuery_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TrackingClickDetailByQueryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TrackingClickServiceServer).TrackingClickDetailByQuery(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chat.TrackingClickService/TrackingClickDetailByQuery",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TrackingClickServiceServer).TrackingClickDetailByQuery(ctx, req.(*TrackingClickDetailByQueryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TrackingClickService_TrackingClickUpdateClientSessionUnid_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TrackingClickUpdateClientSessionUnidRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TrackingClickServiceServer).TrackingClickUpdateClientSessionUnid(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chat.TrackingClickService/TrackingClickUpdateClientSessionUnid",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TrackingClickServiceServer).TrackingClickUpdateClientSessionUnid(ctx, req.(*TrackingClickUpdateClientSessionUnidRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TrackingClickService_ServiceDesc is the grpc.ServiceDesc for TrackingClickService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -98,6 +162,14 @@ var TrackingClickService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "TrackingClickCreate",
 			Handler:    _TrackingClickService_TrackingClickCreate_Handler,
+		},
+		{
+			MethodName: "TrackingClickDetailByQuery",
+			Handler:    _TrackingClickService_TrackingClickDetailByQuery_Handler,
+		},
+		{
+			MethodName: "TrackingClickUpdateClientSessionUnid",
+			Handler:    _TrackingClickService_TrackingClickUpdateClientSessionUnid_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

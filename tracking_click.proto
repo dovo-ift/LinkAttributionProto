@@ -8,6 +8,8 @@ option go_package = "protogen/linkAttribution";
 
 service TrackingClickService {
   rpc TrackingClickCreate(TrackingClickCreateRequest) returns (TrackingClickUpsertResponse) {}
+  rpc TrackingClickDetailByQuery(TrackingClickDetailByQueryRequest) returns (TrackingClickDetailResponse) {}
+  rpc TrackingClickUpdateClientSessionUnid(TrackingClickUpdateClientSessionUnidRequest) returns (TrackingClickUpsertResponse) {}
 }
 
 message TrackingClickUpsert {
@@ -39,5 +41,45 @@ message TrackingClickCreateRequest {
   string apiFrom = 8;
   TrackingClickSecurity security = 9;
   string client_session_unid = 10;
-  //  string path = 11;
+}
+
+message TrackingClickDetailByQueryRequest {
+  TrackingClickSecurity security = 1;
+  string userAgent = 3;
+  string ip = 4;
+  int32 screenWidth = 5;
+  int32 screenHeight = 6;
+  string screenResolution = 7;
+}
+
+message TrackingClick {
+  string unid = 1;
+  google.protobuf.Timestamp createdAt = 2;
+  google.protobuf.Timestamp updatedAt = 3;
+  google.protobuf.Timestamp deletedAt = 4;
+  string linkUnid = 5;
+  string appUnid = 6;
+  string clientSessionUnid = 7;
+  string userAgent = 8;
+  TrackingClickScreenSize screenSize = 10;
+  string ip = 11;
+  string api_from = 12;
+}
+
+message TrackingClickScreenSize {
+  int32 width = 1;
+  int32 height = 2;
+  string resolution = 4;
+}
+
+message TrackingClickDetailResponse {
+  TrackingClick data = 1;
+  string message = 2;
+  int32 code = 3;
+}
+
+message TrackingClickUpdateClientSessionUnidRequest {
+  TrackingClickSecurity security = 1;
+  string unid = 2;
+  string clientSessionUnid = 3;
 }
