@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type TrackingClickServiceClient interface {
 	TrackingClickCreate(ctx context.Context, in *TrackingClickCreateRequest, opts ...grpc.CallOption) (*TrackingClickUpsertResponse, error)
 	TrackingClickDetailByQuery(ctx context.Context, in *TrackingClickDetailByQueryRequest, opts ...grpc.CallOption) (*TrackingClickDetailResponse, error)
-	TrackingClickUpdateClientSessionUnid(ctx context.Context, in *TrackingClickUpdateClientSessionUnidRequest, opts ...grpc.CallOption) (*TrackingClickUpsertResponse, error)
+	TrackingClickUpdateClientSessionUnid(ctx context.Context, in *TrackingClickUpdateClientSessionUnidRequest, opts ...grpc.CallOption) (*TrackingClickDetailResponse, error)
 }
 
 type trackingClickServiceClient struct {
@@ -53,8 +53,8 @@ func (c *trackingClickServiceClient) TrackingClickDetailByQuery(ctx context.Cont
 	return out, nil
 }
 
-func (c *trackingClickServiceClient) TrackingClickUpdateClientSessionUnid(ctx context.Context, in *TrackingClickUpdateClientSessionUnidRequest, opts ...grpc.CallOption) (*TrackingClickUpsertResponse, error) {
-	out := new(TrackingClickUpsertResponse)
+func (c *trackingClickServiceClient) TrackingClickUpdateClientSessionUnid(ctx context.Context, in *TrackingClickUpdateClientSessionUnidRequest, opts ...grpc.CallOption) (*TrackingClickDetailResponse, error) {
+	out := new(TrackingClickDetailResponse)
 	err := c.cc.Invoke(ctx, "/chat.TrackingClickService/TrackingClickUpdateClientSessionUnid", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -68,7 +68,7 @@ func (c *trackingClickServiceClient) TrackingClickUpdateClientSessionUnid(ctx co
 type TrackingClickServiceServer interface {
 	TrackingClickCreate(context.Context, *TrackingClickCreateRequest) (*TrackingClickUpsertResponse, error)
 	TrackingClickDetailByQuery(context.Context, *TrackingClickDetailByQueryRequest) (*TrackingClickDetailResponse, error)
-	TrackingClickUpdateClientSessionUnid(context.Context, *TrackingClickUpdateClientSessionUnidRequest) (*TrackingClickUpsertResponse, error)
+	TrackingClickUpdateClientSessionUnid(context.Context, *TrackingClickUpdateClientSessionUnidRequest) (*TrackingClickDetailResponse, error)
 	mustEmbedUnimplementedTrackingClickServiceServer()
 }
 
@@ -82,7 +82,7 @@ func (UnimplementedTrackingClickServiceServer) TrackingClickCreate(context.Conte
 func (UnimplementedTrackingClickServiceServer) TrackingClickDetailByQuery(context.Context, *TrackingClickDetailByQueryRequest) (*TrackingClickDetailResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TrackingClickDetailByQuery not implemented")
 }
-func (UnimplementedTrackingClickServiceServer) TrackingClickUpdateClientSessionUnid(context.Context, *TrackingClickUpdateClientSessionUnidRequest) (*TrackingClickUpsertResponse, error) {
+func (UnimplementedTrackingClickServiceServer) TrackingClickUpdateClientSessionUnid(context.Context, *TrackingClickUpdateClientSessionUnidRequest) (*TrackingClickDetailResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TrackingClickUpdateClientSessionUnid not implemented")
 }
 func (UnimplementedTrackingClickServiceServer) mustEmbedUnimplementedTrackingClickServiceServer() {}

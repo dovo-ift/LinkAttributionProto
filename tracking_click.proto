@@ -9,7 +9,7 @@ option go_package = "protogen/linkAttribution";
 service TrackingClickService {
   rpc TrackingClickCreate(TrackingClickCreateRequest) returns (TrackingClickUpsertResponse) {}
   rpc TrackingClickDetailByQuery(TrackingClickDetailByQueryRequest) returns (TrackingClickDetailResponse) {}
-  rpc TrackingClickUpdateClientSessionUnid(TrackingClickUpdateClientSessionUnidRequest) returns (TrackingClickUpsertResponse) {}
+  rpc TrackingClickUpdateClientSessionUnid(TrackingClickUpdateClientSessionUnidRequest) returns (TrackingClickDetailResponse) {}
 }
 
 message TrackingClickUpsert {
@@ -72,7 +72,7 @@ message TrackingClickScreenSize {
   string resolution = 4;
 }
 
-message TrackingClickDetailResponse {
+message TrackingClickDetailResponse { 
   TrackingClick data = 1;
   string message = 2;
   int32 code = 3;
@@ -80,6 +80,5 @@ message TrackingClickDetailResponse {
 
 message TrackingClickUpdateClientSessionUnidRequest {
   TrackingClickSecurity security = 1;
-  string unid = 2;
   string clientSessionUnid = 3;
 }
